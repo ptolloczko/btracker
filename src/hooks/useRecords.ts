@@ -30,23 +30,23 @@ export function useRecords() {
       id: uuidv4(),
       createdAt: new Date().toISOString(),
     }
-    const updated = sortNewestFirst([...records, record])
-    setRecords(updated)
+    const updated = sortNewestFirst([...load(), record])
     save(updated)
+    setRecords(updated)
   }
 
   function updateRecord(id: string, input: BloodRecordInput): void {
     const updated = sortNewestFirst(
-      records.map((r) => (r.id === id ? { ...r, ...input } : r))
+      load().map((r) => (r.id === id ? { ...r, ...input } : r))
     )
-    setRecords(updated)
     save(updated)
+    setRecords(updated)
   }
 
   function deleteRecord(id: string): void {
-    const updated = records.filter((r) => r.id !== id)
-    setRecords(updated)
+    const updated = load().filter((r) => r.id !== id)
     save(updated)
+    setRecords(updated)
   }
 
   return { records, addRecord, updateRecord, deleteRecord }
