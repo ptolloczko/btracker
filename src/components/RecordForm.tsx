@@ -8,6 +8,12 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import type { BloodRecordInput } from '@/types/BloodRecord'
 
+function nowLocal(): string {
+  const now = new Date()
+  now.setSeconds(0, 0)
+  return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16)
+}
+
 const isPositiveInt = (v: string) => Number.isInteger(Number(v)) && Number(v) > 0
 const isPositiveNum = (v: string) => !isNaN(Number(v)) && Number(v) > 0
 
@@ -29,7 +35,7 @@ type Props = {
 export function RecordForm({ onAdd }: Props) {
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { date: '', systolic: '', diastolic: '', heartRate: '', glucose: '', notes: '' },
+    defaultValues: { date: nowLocal(), systolic: '', diastolic: '', heartRate: '', glucose: '', notes: '' },
   })
 
   function onSubmit(values: FormValues) {
